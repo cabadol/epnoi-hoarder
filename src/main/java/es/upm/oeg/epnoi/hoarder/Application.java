@@ -2,15 +2,18 @@ package es.upm.oeg.epnoi.hoarder;
 
 import groovy.lang.GroovyClassLoader;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.spring.Main;
 import org.apache.camel.spring.SpringCamelContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.AbstractApplicationContext;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,8 +31,17 @@ public class Application {
     @Autowired
     RouteBuilder routeBuilder;
 
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+    public static void main(String[] args) throws Exception {
+        // Initialize Spring Context
+        ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
+
+        // Launch Camel Context
+        Main main = new Main();
+        main.enableHangupSupport();
+        main.setApplicationContext((AbstractApplicationContext) context);
+        main.addRouteBuilder(context.getBean(AbstractRouteBuilder.class));
+        main.run();
+
     }
 
     @Bean

@@ -13,10 +13,10 @@
 |   _   ||       ||   _   ||   |  | ||       ||   |___ |   |  | |
 |__| |__||_______||__| |__||___|  |_||______| |_______||___|  |_|
 
-                                   ${application.formatted-version}
 
-                                    Ontology Engineering Group
-                                Universidad Politecnica de Madrid
-                                Carlos Badenes:     cbadenes@fi.upm.es
-                                Rafael Gonzalez:    rgonzalez@fi.upm.es
+                     ${application.formatted-version}
+                    Ontology Engineering Group
+                 Universidad Politecnica de Madrid
+               Carlos Badenes:     cbadenes@fi.upm.es
+               Rafael Gonzalez:    rgonzalez@fi.upm.es
 
