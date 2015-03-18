@@ -138,6 +138,6 @@ Download the binary distribution:
 
 | Version | Link |
 | :------- |:-----|
-| 1.0.4    | [tar.gz](http://github.com/cabadol/epnoi-hoarder/raw/mvn-repo/es/upm/oeg/epnoi-hoarder/1.0.4/epnoi-hoarder-1.0.4.tar.gz)|
+| 1.0.5    | [tar.gz](http://github.com/cabadol/epnoi-hoarder/raw/mvn-repo/es/upm/oeg/epnoi/epnoi-hoarder/1.0.5/epnoi-hoarder-1.0.5.tar.gz)|
 
 This work is funded by the EC-funded project DrInventor ([www.drinventor.eu](www.drinventor.eu)).
