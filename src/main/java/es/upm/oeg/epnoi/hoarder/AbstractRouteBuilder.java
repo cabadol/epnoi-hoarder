@@ -67,9 +67,6 @@ public abstract class AbstractRouteBuilder extends RouteBuilder {
     protected TimeGenerator timeClock;
 
     @Autowired
-    protected UIAContextGenerator contextBuilder;
-
-    @Autowired
     protected UUIDGenerator uuidGenerator;
 
     @Value("${storage.path}")

@@ -95,9 +95,6 @@ public class HttpRelationOAITest extends CamelTestSupport{
 
                 TimeGenerator timeClock = new TimeGenerator();
 
-                UIAContextGenerator contextBuilder = new UIAContextGenerator();
-
-
                 Namespaces ns = new Namespaces("oai", "http://www.openarchives.org/OAI/2.0/")
                         .add("dc", "http://purl.org/dc/elements/1.1/")
                         .add("provenance", "http://www.openarchives.org/OAI/2.0/provenance")

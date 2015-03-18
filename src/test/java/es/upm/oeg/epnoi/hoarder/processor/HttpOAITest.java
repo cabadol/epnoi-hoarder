@@ -75,31 +75,7 @@ public class HttpOAITest extends CamelTestSupport{
                 "</OAI-PMH>\n";
 
 
-        String json = "{\"publications\":" +
-                "[{" +
-                    "\"title\":\"Identificación y caracterización funcional del complejo nuclear de proteínas LSM de \\\"Arabidopsis thaliana\\\" en la respuesta de aclimatación a las temperaturas bajas\"," +
-                    "\"description\":\"\",\"published\":\"2015-03-03T13:38:54Z\"," +
-                    "\"uri\":\"oai:www.ucm.es:28974\"," +
-                    "\"url\":\"file://oaipmh/ucm/2015-03-03/resource-1425389934000.pdf\"," +
-                    "\"language\":\"es\"," +
-                    "\"rights\":\"info:eu-repo/semantics/openAccess\"," +
-                    "\"creators\":[" +
-                        "\"Hernández Verdeja, Tamara\"," +
-                        "\"Fernandez Libre, Antonio\"]," +
-                    "\"format\":\"pdf\"," +
-                    "\"reference\":{" +
-                        "\"format\":\"xml\"," +
-                        "\"url\":\"file://oaipmh/ucm/2015-03-03/resource-1425389934000.xml\"}" +
-                "}]," +
-                "\"source\":{" +
-                    "\"name\":\"ucm\"," +
-                    "\"uri\":\"http://www.epnoi.org/oai-providers/ucm\"," +
-                    "\"url\":\"http://eprints.ucm.es/cgi/oai2\"," +
-                    "\"protocol\":\"oaipmh\"" +
-                "}}";
-
         resultEndpoint.expectedMessageCount(1);
-        resultEndpoint.expectedBodiesReceived(json);
 
         template.sendBody(xml);
         resultEndpoint.assertIsSatisfied();
@@ -115,9 +91,6 @@ public class HttpOAITest extends CamelTestSupport{
                  ************************************************************************************************************/
 
                 TimeGenerator timeClock = new TimeGenerator();
-
-                UIAContextGenerator contextBuilder = new UIAContextGenerator();
-
 
                 Namespaces ns = new Namespaces("oai", "http://www.openarchives.org/OAI/2.0/")
                         .add("dc", "http://purl.org/dc/elements/1.1/")
@@ -165,7 +138,6 @@ public class HttpOAITest extends CamelTestSupport{
                                         "${property." + AbstractRouteBuilder.PUBLICATION_PUBLISHED_DATE + "}/" +
                                         "resource-${property." + AbstractRouteBuilder.PUBLICATION_PUBLISHED_MILLIS + "}.${property." + AbstractRouteBuilder.PUBLICATION_FORMAT + "}")).
                         to("file:target/?fileName=${property." + AbstractRouteBuilder.PUBLICATION_URL_LOCAL + "}").
-                        process(contextBuilder).
                         to("mock:result");
             }
         };

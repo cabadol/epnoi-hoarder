@@ -92,45 +92,7 @@ public class HttpRSSTest extends CamelTestSupport{
                 "\n";
 
 
-        String json = "{\"publications\":" +
-                "[{\"title\":\"Musician Releases Album of Music To Code By\"," +
-                "\"description\":\"itwbennett writes Music and programming go hand-in-keyboard. And now programmer/musician Carl Franklin has released an album of music he wrote " +
-                "specifically for use as background music when writing software. \\\"The biggest challenge was dialing back my instinct to make real " +
-                "music,\\\" Franklin told ITworld\\u0027s Phil Johnson. \\\"This had to fade into the background. It couldn\\u0027t distract the " +
-                "listener, but it couldn\\u0027t be boring either. That was a particular challenge that I think most musicians would " +
-                "have found maddening.\\\"\\u003cp\\u003e\\u003cdiv class\\u003d\\\"share_submission\\\" style\\u003d\\\"position:relative;\\\"\\u003e\\n\\u003ca " +
-                "class\\u003d\\\"slashpop\\\" href\\u003d\\\"http://twitter.com/home?status\\u003dMusician+Releases+Album+of+Music+To+Code+By%3A+http%3A%2F%2Fbit." +
-                "ly%2F1BdhjQq\\\"\\u003e\\u003cimg src\\u003d\\\"http://a.fsdn.com/sd/twitter_icon_large.png\\\"\\u003e\\u003c/a\\u003e\\n\\u003ca class\\u003d\\\"" +
-                "slashpop\\\" href\\u003d\\\"http://www.facebook.com/sharer.php?u\\u003dhttp%3A%2F%2Fentertainment.slashdot.org%2Fstory%2F15%2F03%2F05%2F2325238%2Fmusician-" +
-                "releases-album-of-music-to-code-by%3Futm_source%3Dslashdot%26utm_medium%3Dfacebook\\\"\\u003e\\u003cimg src\\u003d\\\"http://a.fsdn.com/sd/facebook_icon" +
-                "_large.png\\\"\\u003e\\u003c/a\\u003e\\n\\n\\u003ca class\\u003d\\\"nobg\\\" href\\u003d\\\"http://plus.google.com/share?url\\u003dhttp://entertain" +
-                "ment.slashdot.org/story/15/03/05/2325238/musician-releases-album-of-music-to-code-by?utm_source\\u003dslashdot\\u0026amp;utm_medium\\u003dgoogleplus" +
-                "\\\" onclick\\u003d\\\"javascript:window.open(this.href,\\u0027\\u0027, \\u0027menubar\\u003dno,toolbar\\u003dno,resizable\\u003dyes,scrollbars\\u00" +
-                "3dyes,height\\u003d600,width\\u003d600\\u0027);return false;\\\"\\u003e\\u003cimg src\\u003d\\\"http://www.gstatic.com/images/icons/gplus-16.png\\\"" +
-                " alt\\u003d\\\"Share on Google+\\\"/\\u003e\\u003c/a\\u003e                                                                                                                                                                              " +
-                "\\n\\n\\n\\n\\u003c/div\\u003e\\u003c/p\\u003e\\u003cp\\u003e\\u003ca href\\u003d\\\"http://entertainment.slashdot.org/story/15/03/05/2325238/music" +
-                "ian-releases-album-of-music-to-code-by?utm_source\\u003drss1.0moreanon\\u0026amp;utm_medium\\u003dfeed\\\"\\u003eRead more of this story\\u003c/a\\" +
-                "u003e at Slashdot.\\u003c/p\\u003e\\u003ciframe src\\u003d\\\"http://slashdot.org/slashdot-it.pl?op\\u003ddiscuss\\u0026amp;id\\u003d7060155\\u0026" +
-                "amp;smallembed\\u003d1\\\" style\\u003d\\\"height: 300px; width: 100%; border: none;\\\"\\u003e\\u003c/iframe\\u003e\\u003cimg src\\u003d\\\"//feed" +
-                "s.feedburner.com/~r/Slashdot/slashdot/~4/qFYJLyH7aXA\\\" height\\u003d\\\"1\\\" width\\u003d\\\"1\\\" alt\\u003d\\\"\\\"/\\u003e\"," +
-                "\"published\":\"2015-03-06T03:03:00Z\"," +
-                "\"uri\":\"http://localhost:8080/rss/resource.htm\"," +
-                "\"url\":\"file://rss/slashdot/2015-03-06/resource-1425610980000.htm\"," +
-                "\"language\":\"en-us\"," +
-                "\"rights\":\"Copyright 1997-2015, Dice. All Rights Reserved. Slashdot is a Dice Holdings, Inc. service\"," +
-                "\"creators\":[\"help@slashdot.org\"]," +
-                "\"format\":\"htm\"," +
-                "\"reference\":" +
-                "{\"format\":\"xml\"," +
-                "\"url\":\"file://rss/slashdot/2015-03-06/resource-1425610980000.xml\"}}]," +
-                "\"source\":{" +
-                "\"name\":\"slashdot\"," +
-                "\"uri\":\"http://www.epnoi.org/feeds/slashdot\"," +
-                "\"url\":\"http://rss.slashdot.org/Slashdot/slashdot\"," +
-                "\"protocol\":\"rss\"}}";
-
         resultEndpoint.expectedMessageCount(1);
-        resultEndpoint.expectedBodiesReceived(json);
 
         template.sendBody(xml);
         resultEndpoint.assertIsSatisfied();
@@ -146,8 +108,6 @@ public class HttpRSSTest extends CamelTestSupport{
                  ************************************************************************************************************/
 
                 TimeGenerator timeClock = new TimeGenerator();
-
-                UIAContextGenerator contextBuilder = new UIAContextGenerator();
 
                 Namespaces ns = new Namespaces("oai", "http://www.openarchives.org/OAI/2.0/")
                         .add("dc", "http://purl.org/dc/elements/1.1/")
@@ -196,7 +156,6 @@ public class HttpRSSTest extends CamelTestSupport{
                                         "${property." + AbstractRouteBuilder.PUBLICATION_PUBLISHED_DATE + "}/" +
                                         "resource-${property." + AbstractRouteBuilder.PUBLICATION_PUBLISHED_MILLIS + "}.${property." + AbstractRouteBuilder.PUBLICATION_FORMAT + "}")).
                         to("file:target/?fileName=${property." + AbstractRouteBuilder.PUBLICATION_URL_LOCAL + "}").
-                        process(contextBuilder).
                         to("mock:result");
             }
         };
