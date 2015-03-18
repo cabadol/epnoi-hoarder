@@ -5,7 +5,7 @@ For more details about Epnoi see: https://github.com/fitash/epnoi/wiki
 This tool allows you hoard scientific publications from [RSS](http://www.rssboard.org/rss-specification) servers and/or [OAI-PMH](http://www.openarchives.org) data providers.
 
 ## New Routes
-We use [Camel](http://camel.apache.org) to set our harvesting workflows. All these routes are defined in `config/routes.groovy`. It is a [Groovy](http://groovy.codehaus.org) route builder that allows, in a easy way, create/modify/delete collection flows.  
+We use [Camel](http://camel.apache.org) to set our hoarding workflows. All these routes are defined in `config/routes.groovy`. It is a [Groovy](http://groovy.codehaus.org) route builder that allows, in a easy way, create/modify/delete collection flows.
 
 For a RSS source, for instance [Slashdot](http://rss.slashdot.org/Slashdot/slashdot), you can define the following route:  
 ```groovy
