@@ -15,8 +15,7 @@ class routes extends AbstractRouteBuilder{
                 setProperty(SOURCE_NAME,        constant("slashdot")).
                 setProperty(SOURCE_URL,         constant("http://rss.slashdot.org/Slashdot/slashdot")).
                 to("direct:setCommonRssXpathExpressions").
-                to("direct:retrieveByHttpAndSave").
-                to("direct:notifyUIA")
+                to("direct:retrieveByHttpAndSave")
 
         /*********************************************************************************************************************************
          * ROUTE 2: UPM
@@ -26,9 +25,7 @@ class routes extends AbstractRouteBuilder{
                 setProperty(SOURCE_URL,         constant("http://oa.upm.es/perl/oai2")).
                 to("direct:setCommonOaipmhXpathExpressions").
                 setProperty(PUBLICATION_URL,    xpath("//oai:metadata/oai:dc/dc:relation/text()",String.class).namespaces(ns)).
-                to("direct:avoidDeleted").
-                to("direct:retrieveByHttpAndSave").
-                to("direct:notifyUIA")
+                to("direct:retrieveByHttpAndSave")
 
         /*********************************************************************************************************************************
          * ROUTE 3: UCM
@@ -38,9 +35,7 @@ class routes extends AbstractRouteBuilder{
                 setProperty(SOURCE_URL,         constant("http://eprints.ucm.es/cgi/oai2")).
                 to("direct:setCommonOaipmhXpathExpressions").
                 setProperty(PUBLICATION_URL,    xpath("//oai:metadata/oai:dc/dc:identifier/text()",String.class).namespaces(ns)).
-                to("direct:avoidDeleted").
-                to("direct:retrieveByHttpAndSave").
-                to("direct:notifyUIA")
+                to("direct:retrieveByHttpAndSave")
 
         /*********************************************************************************************************************************
          * ROUTE 4: SciencePubCo
@@ -50,17 +45,8 @@ class routes extends AbstractRouteBuilder{
                 setProperty(SOURCE_URL,         constant("http://www.sciencepubco.com/index.php/IJAA/oai")).
                 to("direct:setCommonOaipmhXpathExpressions").
                 setProperty(PUBLICATION_URL,    xpath("replace(substring-before(concat(string-join(//oai:metadata/oai:dc/dc:relation/text(),\";\"),\";\"),\";\"),\"view\",\"download\")",String.class).namespaces(ns)).
-                to("direct:avoidDeleted").
-                to("direct:retrieveByHttpAndSave").
-                to("direct:notifyUIA")
+                to("direct:retrieveByHttpAndSave")
 
-        /*********************************************************************************************************************************
-         * -> To UIA
-         *********************************************************************************************************************************/
-        from("direct:notifyUIA").
-                process(contextBuilder).
-                //to("euia:out?servers="+ uiaServers)
-                to("stream:out")
 
 
     }

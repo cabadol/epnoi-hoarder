@@ -3,8 +3,11 @@ package es.upm.oeg.epnoi.hoarder;
 import com.google.common.base.Joiner;
 import es.upm.oeg.epnoi.hoarder.processor.*;
 import org.apache.camel.Exchange;
+import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.builder.xml.Namespaces;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -12,6 +15,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 public abstract class AbstractRouteBuilder extends RouteBuilder {
+
+    protected static final Logger LOG = LoggerFactory.getLogger(AbstractRouteBuilder.class);
 
     private static Joiner joiner                                = Joiner.on(".");
     private static final String EPNOI                           = "epnoi";
@@ -90,7 +95,7 @@ public abstract class AbstractRouteBuilder extends RouteBuilder {
                 .process(errorHandler).stop();
 
         /*********************************************************************************************************************************
-         * ROUTE PARTIAL 1:  Save metadata and retrieve resource by Http
+         * COMMON ROUTE 1:  Save metadata and retrieve resource by Http
          *********************************************************************************************************************************/
         from("direct:retrieveByHttpAndSave").
                 process(timeClock).
@@ -135,13 +140,14 @@ public abstract class AbstractRouteBuilder extends RouteBuilder {
                 setProperty(PUBLICATION_RIGHTS,             xpath("//oai:metadata/oai:dc/dc:rights/text()",String.class).namespaces(ns)).
                 setProperty(PUBLICATION_CREATORS,           xpath("string-join(//oai:metadata/oai:dc/dc:creator/text(),\";\")",String.class).namespaces(ns)).
                 setProperty(PUBLICATION_FORMAT,             xpath("substring-after(//oai:metadata/oai:dc/dc:format/text(),\"/\")", String.class).namespaces(ns)).
-                setProperty(PUBLICATION_METADATA_FORMAT,    constant("xml"));
+                setProperty(PUBLICATION_METADATA_FORMAT,    constant("xml")).
+                to("direct:avoidDeletedMessages");
 
 
         /*********************************************************************************************************************************
          * -> Avoid OAI-PMH Deleted Resources
          *********************************************************************************************************************************/
-        from("direct:avoidDeleted").
+        from("direct:avoidDeletedMessages").
                 choice().
                 when().xpath("//oai:header[@status=\"deleted\"]", String.class, ns).stop().
                 end();
@@ -151,7 +157,8 @@ public abstract class AbstractRouteBuilder extends RouteBuilder {
          *********************************************************************************************************************************/
         from("direct:saveToFile").
                 setHeader(ARGUMENT_PATH, simple("${property." + SOURCE_PROTOCOL + "}/${property." + SOURCE_NAME + "}/${property" + PUBLICATION_PUBLISHED_DATE + "}/${header." + ARGUMENT_NAME + "}")).
-                to("file:"+basedir+"/?fileName=${header."+ARGUMENT_PATH+"}");
+                log(LoggingLevel.INFO,LOG,"File Saved: '${header."+ARGUMENT_PATH+"}'").
+                to("file:" + basedir + "/?fileName=${header." + ARGUMENT_PATH + "}");
 
 
         /*********************************************************************************************************************************
