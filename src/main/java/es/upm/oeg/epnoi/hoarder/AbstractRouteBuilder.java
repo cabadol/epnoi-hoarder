@@ -72,8 +72,6 @@ public abstract class AbstractRouteBuilder extends RouteBuilder {
     @Value("${storage.path}")
     protected String basedir;
 
-    @Value("${uia.service.host}")
-    protected String uiaServers;
 
     protected Namespaces ns = new Namespaces("oai", "http://www.openarchives.org/OAI/2.0/")
         .add("dc", "http://purl.org/dc/elements/1.1/")
@@ -155,7 +153,7 @@ public abstract class AbstractRouteBuilder extends RouteBuilder {
         from("direct:saveToFile").
                 setHeader(ARGUMENT_PATH, simple("${property." + SOURCE_PROTOCOL + "}/${property." + SOURCE_NAME + "}/${property" + PUBLICATION_PUBLISHED_DATE + "}/${header." + ARGUMENT_NAME + "}")).
                 log(LoggingLevel.INFO,LOG,"File Saved: '${header."+ARGUMENT_PATH+"}'").
-                to("file:" + basedir + "/?fileName=${header." + ARGUMENT_PATH + "}");
+                to("file:" + basedir + "/?fileName=${header." + ARGUMENT_PATH + "}&doneFileName=${file:name}.done");
 
 
         /*********************************************************************************************************************************
