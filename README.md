@@ -15,8 +15,7 @@ from("rss:http://rss.slashdot.org/Slashdot/slashdot?" +
                 setProperty(SOURCE_NAME, constant("slashdot")).
                 setProperty(SOURCE_URL,  constant("http://rss.slashdot.org/Slashdot/slashdot")).
                 to("direct:setCommonRssXpathExpressions").
-                to("direct:retrieveByHttpAndSave").
-                to("direct:notifyUIA")
+                to("direct:retrieveByHttpAndSave")
 ```
 For an OAI-PMH source, for instance [UPM](http://oa.upm.es/perl/oai2), the route will be: 
 ```groovy
@@ -25,9 +24,7 @@ from("oaipmh://oa.upm.es/perl/oai2?initialDelay=1000&delay=60000").
                 setProperty(SOURCE_URL,         constant("http://oa.upm.es/perl/oai2")).
                 to("direct:setCommonOaipmhXpathExpressions").
                 setProperty(PUBLICATION_URL,    xpath("//oai:metadata/oai:dc/dc:relation/text()",String.class).namespaces(ns)).
-                to("direct:avoidDeleted").
-                to("direct:retrieveByHttpAndSave").
-                to("direct:notifyUIA")
+                to("direct:retrieveByHttpAndSave")
 ```
 ## Common Routes
 
@@ -64,12 +61,13 @@ from("direct:setCommonOaipmhXpathExpressions").
                 setProperty(PUBLICATION_RIGHTS,         xpath("//oai:metadata/oai:dc/dc:rights/text()",String.class).namespaces(ns)).
                 setProperty(PUBLICATION_CREATORS,       xpath("string-join(//oai:metadata/oai:dc/dc:creator/text(),\";\")",String.class).namespaces(ns)).
                 setProperty(PUBLICATION_FORMAT, xpath("substring-after(//oai:metadata/oai:dc/dc:format/text(),\"/\")", String.class).namespaces(ns)).
-                setProperty(PUBLICATION_METADATA_FORMAT, constant("xml"));
+                setProperty(PUBLICATION_METADATA_FORMAT, constant("xml")).
+                to(direct:avoidDeletedMessages);
 ```
 
 ### direct:avoidDeleted
 ```groovy
-from("direct:avoidDeleted").
+from("direct:avoidDeletedMessages").
                 choice().
                 when().xpath("//oai:header[@status=\"deleted\"]", String.class, ns).stop().
                 end();
@@ -79,6 +77,7 @@ from("direct:avoidDeleted").
 ```groovy
 from("direct:saveToFile").
                 setHeader(ARGUMENT_PATH, simple("${property." + SOURCE_PROTOCOL + "}/${property." + SOURCE_NAME + "}/${property" + PUBLICATION_PUBLISHED_DATE + "}/${header." + ARGUMENT_NAME + "}")).
+                log(LoggingLevel.INFO,LOG,"File Saved: '${header."+ARGUMENT_PATH+"}'").
                 to("file:"+basedir+"/?fileName=${header."+ARGUMENT_PATH+"}");
 ```
 
@@ -139,6 +138,6 @@ Download the binary distribution:
 
 | Version | Link |
 | :------- |:-----|
-| 1.0.3    | [tar.gz](http://github.com/cabadol/epnoi-hoarder/raw/mvn-repo/es/upm/oeg/epnoi-hoarder/1.0.3/epnoi-hoarder-1.0.3.tar.gz)|
+| 1.0.4    | [tar.gz](http://github.com/cabadol/epnoi-hoarder/raw/mvn-repo/es/upm/oeg/epnoi-hoarder/1.0.4/epnoi-hoarder-1.0.4.tar.gz)|
 
 This work is funded by the EC-funded project DrInventor ([www.drinventor.eu](www.drinventor.eu)).
