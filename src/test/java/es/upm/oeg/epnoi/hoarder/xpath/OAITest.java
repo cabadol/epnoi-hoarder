@@ -75,7 +75,7 @@ public class OAITest extends CamelTestSupport{
         resultEndpoint.expectedHeaderReceived(AbstractRouteBuilder.PUBLICATION_LANGUAGE,"en");
         resultEndpoint.expectedHeaderReceived(AbstractRouteBuilder.PUBLICATION_RIGHTS,"info:eu-repo/semantics/openAccess");
         resultEndpoint.expectedHeaderReceived(AbstractRouteBuilder.PUBLICATION_CREATORS,"Zong, Yi;Franco Peláez, Francisco Javier;Agapito Serrano, Juan Andrés;Fernandes, Ana C.;Marques, José G.");
-
+        resultEndpoint.expectedHeaderReceived(AbstractRouteBuilder.PUBLICATION_FORMAT,"pdf");
 
         template.sendBody(xml);
         resultEndpoint.assertIsSatisfied();
@@ -93,7 +93,7 @@ public class OAITest extends CamelTestSupport{
 
                 from("direct:start").
                         setHeader(AbstractRouteBuilder.SOURCE_NAME,                   constant("ucm")).
-                        setHeader(AbstractRouteBuilder.SOURCE_URI,                    constant("http://www.epnoi.org/oai-providers/ucm")).
+                        setHeader(AbstractRouteBuilder.SOURCE_URI, constant("http://www.epnoi.org/oai-providers/ucm")).
                         setHeader(AbstractRouteBuilder.SOURCE_URL, constant("http://eprints.ucm.es/cgi/oai2")).
                         setHeader(AbstractRouteBuilder.SOURCE_PROTOCOL,               constant("oaipmh")).
                         setHeader(AbstractRouteBuilder.PUBLICATION_TITLE,             xpath("//oai:metadata/oai:dc/dc:title/text()", String.class).namespaces(ns)).
@@ -104,8 +104,9 @@ public class OAITest extends CamelTestSupport{
                         setHeader(AbstractRouteBuilder.PUBLICATION_LANGUAGE,          xpath("//oai:metadata/oai:dc/dc:language/text()", String.class).namespaces(ns)).
                         setHeader(AbstractRouteBuilder.PUBLICATION_RIGHTS,            xpath("//oai:metadata/oai:dc/dc:rights/text()", String.class).namespaces(ns)).
                         setHeader(AbstractRouteBuilder.PUBLICATION_CREATORS,          xpath("string-join(//oai:metadata/oai:dc/dc:creator/text(),\";\")", String.class).namespaces(ns)).
-                        setHeader(AbstractRouteBuilder.PUBLICATION_FORMAT,            constant("pdf")).
-                        setHeader(AbstractRouteBuilder.PUBLICATION_METADATA_FORMAT,  constant("xml")).
+                        setHeader(AbstractRouteBuilder.PUBLICATION_FORMAT,            xpath("substring-after(//oai:metadata/oai:dc/dc:format[1]/text(),\"/\")", String.class).namespaces(ns)).
+                        setHeader(AbstractRouteBuilder.PUBLICATION_METADATA_FORMAT, constant("xml")).
+                        to("log:es.upm.oeg.epnoi.hoarder?level=INFO").
                         to("mock:result");
             }
         };
