@@ -163,6 +163,120 @@ class routes extends AbstractRouteBuilder{
                 to("direct:retrieveByHttpAndSave")
 
 
+        /*********************************************************************************************************************************
+         * ROUTE 1: Innovare Journal of Agricultural Science
+         * http://innovareacademics.in/journals/index.php/ijags/oai?verb=ListRecords&metadataPrefix=oai_dc
+         *********************************************************************************************************************************/
+        from("oaipmh://innovareacademics.in/journals/index.php/ijags/oai?initialDelay=1000&delay=60000").
+                setProperty(SOURCE_NAME,        constant("ijags")).
+                setProperty(SOURCE_URL,         constant("http://innovareacademics.in/journals/index.php/ijags/oai")).
+                to("direct:setCommonOaipmhXpathExpressions").
+                setProperty(PUBLICATION_URL,    xpath("replace(substring-before(concat(string-join(//oai:metadata/oai:dc/dc:relation/text(),\";\"),\";\"),\";\"),\"view\",\"download\")",String.class).namespaces(ns)).
+                to("direct:retrieveByHttpAndSave")
+
+        /*********************************************************************************************************************************
+         * ROUTE 2: Innovare Journal of Ayurvedic Science
+         * http://innovareacademics.in/journals/index.php/ijas/oai?verb=ListRecords&metadataPrefix=oai_dc
+         *********************************************************************************************************************************/
+        from("oaipmh://innovareacademics.in/journals/index.php/ijas/oai?initialDelay=1000&delay=60000").
+                setProperty(SOURCE_NAME,        constant("ijas")).
+                setProperty(SOURCE_URL,         constant("http://innovareacademics.in/journals/index.php/ijas/oai")).
+                to("direct:setCommonOaipmhXpathExpressions").
+                setProperty(PUBLICATION_URL,    xpath("replace(substring-before(concat(string-join(//oai:metadata/oai:dc/dc:relation/text(),\";\"),\";\"),\";\"),\"view\",\"download\")",String.class).namespaces(ns)).
+                to("direct:retrieveByHttpAndSave")
+
+        /*********************************************************************************************************************************
+         * ROUTE 3: Innovare Journal of Business Management
+         * http://innovareacademics.in/journals/index.php/ijbm/oai?verb=ListRecords&metadataPrefix=oai_dc
+         *********************************************************************************************************************************/
+        from("oaipmh://innovareacademics.in/journals/index.php/ijbm/oai?initialDelay=1000&delay=60000").
+                setProperty(SOURCE_NAME,        constant("ijbm")).
+                setProperty(SOURCE_URL,         constant("http://innovareacademics.in/journals/index.php/ijbm/oai")).
+                to("direct:setCommonOaipmhXpathExpressions").
+                setProperty(PUBLICATION_URL,    xpath("replace(substring-before(concat(string-join(//oai:metadata/oai:dc/dc:relation/text(),\";\"),\";\"),\";\"),\"view\",\"download\")",String.class).namespaces(ns)).
+                to("direct:retrieveByHttpAndSave")        
+
+
+        /*********************************************************************************************************************************
+         * ROUTE 4: Innovare Journal of Education
+         * http://innovareacademics.in/journals/index.php/ijoe/oai?verb=ListRecords&metadataPrefix=oai_dc
+         *********************************************************************************************************************************/
+        from("oaipmh://innovareacademics.in/journals/index.php/ijoe/oai?initialDelay=1000&delay=60000").
+                setProperty(SOURCE_NAME,        constant("ijoe")).
+                setProperty(SOURCE_URL,         constant("http://innovareacademics.in/journals/index.php/ijoe/oai")).
+                to("direct:setCommonOaipmhXpathExpressions").
+                setProperty(PUBLICATION_URL,    xpath("replace(substring-before(concat(string-join(//oai:metadata/oai:dc/dc:relation/text(),\";\"),\";\"),\";\"),\"view\",\"download\")",String.class).namespaces(ns)).
+                to("direct:retrieveByHttpAndSave")        
+
+
+        /*********************************************************************************************************************************
+         * ROUTE 5: Innovare Journal of Engineering & Technology
+         * http://innovareacademics.in/journals/index.php/ijet/oai?verb=ListRecords&metadataPrefix=oai_dc
+         *********************************************************************************************************************************/
+        from("oaipmh://innovareacademics.in/journals/index.php/ijet/oai?initialDelay=1000&delay=60000").
+                setProperty(SOURCE_NAME,        constant("ijet")).
+                setProperty(SOURCE_URL,         constant("http://innovareacademics.in/journals/index.php/ijet/oai")).
+                to("direct:setCommonOaipmhXpathExpressions").
+                setProperty(PUBLICATION_URL,    xpath("replace(substring-before(concat(string-join(//oai:metadata/oai:dc/dc:relation/text(),\";\"),\";\"),\";\"),\"view\",\"download\")",String.class).namespaces(ns)).
+                to("direct:retrieveByHttpAndSave")        
+
+        /*********************************************************************************************************************************
+         * ROUTE 6: Innovare Journal of Health Science
+         * http://innovareacademics.in/journals/index.php/ijhs/oai?verb=ListRecords&metadataPrefix=oai_dc
+         *********************************************************************************************************************************/
+        from("oaipmh://innovareacademics.in/journals/index.php/ijhs/oai?initialDelay=1000&delay=60000").
+                setProperty(SOURCE_NAME,        constant("ijhs")).
+                setProperty(SOURCE_URL,         constant("http://innovareacademics.in/journals/index.php/ijhs/oai")).
+                to("direct:setCommonOaipmhXpathExpressions").
+                setProperty(PUBLICATION_URL,    xpath("replace(substring-before(concat(string-join(//oai:metadata/oai:dc/dc:relation/text(),\";\"),\";\"),\";\"),\"view\",\"download\")",String.class).namespaces(ns)).
+                to("direct:retrieveByHttpAndSave")        
+
+        /*********************************************************************************************************************************
+         * ROUTE 7: Innovare Journal of Life Science
+         * http://innovareacademics.in/journals/index.php/ijls/oai?verb=ListRecords&metadataPrefix=oai_dc
+         *********************************************************************************************************************************/
+        from("oaipmh://innovareacademics.in/journals/index.php/ijls/oai?initialDelay=1000&delay=60000").
+                setProperty(SOURCE_NAME,        constant("ijls")).
+                setProperty(SOURCE_URL,         constant("http://innovareacademics.in/journals/index.php/ijls/oai")).
+                to("direct:setCommonOaipmhXpathExpressions").
+                setProperty(PUBLICATION_URL,    xpath("replace(substring-before(concat(string-join(//oai:metadata/oai:dc/dc:relation/text(),\";\"),\";\"),\";\"),\"view\",\"download\")",String.class).namespaces(ns)).
+                to("direct:retrieveByHttpAndSave")        
+
+
+        /*********************************************************************************************************************************
+         * ROUTE 8: Innovare Journal of Medical Science
+         * http://innovareacademics.in/journals/index.php/ijms/oai?verb=ListRecords&metadataPrefix=oai_dc
+         *********************************************************************************************************************************/
+        from("oaipmh://innovareacademics.in/journals/index.php/ijms/oai?initialDelay=1000&delay=60000").
+                setProperty(SOURCE_NAME,        constant("ijms")).
+                setProperty(SOURCE_URL,         constant("http://innovareacademics.in/journals/index.php/ijms/oai")).
+                to("direct:setCommonOaipmhXpathExpressions").
+                setProperty(PUBLICATION_URL,    xpath("replace(substring-before(concat(string-join(//oai:metadata/oai:dc/dc:relation/text(),\";\"),\";\"),\";\"),\"view\",\"download\")",String.class).namespaces(ns)).
+                to("direct:retrieveByHttpAndSave")        
+
+
+        /*********************************************************************************************************************************
+         * ROUTE 9: Innovare Journal of Science
+         * http://innovareacademics.in/journals/index.php/ijs/oai?verb=ListRecords&metadataPrefix=oai_dc
+         *********************************************************************************************************************************/
+        from("oaipmh://innovareacademics.in/journals/index.php/ijs/oai?initialDelay=1000&delay=60000").
+                setProperty(SOURCE_NAME,        constant("ijs")).
+                setProperty(SOURCE_URL,         constant("http://innovareacademics.in/journals/index.php/ijs/oai")).
+                to("direct:setCommonOaipmhXpathExpressions").
+                setProperty(PUBLICATION_URL,    xpath("replace(substring-before(concat(string-join(//oai:metadata/oai:dc/dc:relation/text(),\";\"),\";\"),\";\"),\"view\",\"download\")",String.class).namespaces(ns)).
+                to("direct:retrieveByHttpAndSave")        
+
+        /*********************************************************************************************************************************
+         * ROUTE 10: Innovare Journal of Social Science
+         * http://innovareacademics.in/journals/index.php/ijss/oai?verb=ListRecords&metadataPrefix=oai_dc
+         *********************************************************************************************************************************/
+        from("oaipmh://innovareacademics.in/journals/index.php/ijss/oai?initialDelay=1000&delay=60000").
+                setProperty(SOURCE_NAME,        constant("ijss")).
+                setProperty(SOURCE_URL,         constant("http://innovareacademics.in/journals/index.php/ijss/oai")).
+                to("direct:setCommonOaipmhXpathExpressions").
+                setProperty(PUBLICATION_URL,    xpath("replace(substring-before(concat(string-join(//oai:metadata/oai:dc/dc:relation/text(),\";\"),\";\"),\";\"),\"view\",\"download\")",String.class).namespaces(ns)).
+                to("direct:retrieveByHttpAndSave")          
+
 
     }
 
