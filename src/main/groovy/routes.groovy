@@ -275,7 +275,20 @@ class routes extends AbstractRouteBuilder{
                 setProperty(SOURCE_URL,         constant("http://innovareacademics.in/journals/index.php/ijss/oai")).
                 to("direct:setCommonOaipmhXpathExpressions").
                 setProperty(PUBLICATION_URL,    xpath("replace(substring-before(concat(string-join(//oai:metadata/oai:dc/dc:relation/text(),\";\"),\";\"),\";\"),\"view\",\"download\")",String.class).namespaces(ns)).
-                to("direct:retrieveByHttpAndSave")          
+                to("direct:retrieveByHttpAndSave")
+
+
+        /*********************************************************************************************************************************
+         * ROUTE 11: InTech : Nanobiomedicine
+         * http://www.intechopen.com/oai/?verb=ListRecords&metadataPrefix=oai_dc&set=1849-5435
+         *********************************************************************************************************************************/
+        from("oaipmh://www.intechopen.com/oai/?initialDelay=1000&delay=60000&set=1849-5435").
+                setProperty(SOURCE_NAME,        constant("itech-nb")).
+                setProperty(SOURCE_URL,         constant("http://www.intechopen.com/oai/")).
+                to("direct:setCommonOaipmhXpathExpressions").
+                setProperty(PUBLICATION_URL,    xpath("//oai:metadata/oai:dc/dc:source/text()",String.class).namespaces(ns)).
+                to("direct:retrieveByHttpAndSave")
+
 
 
     }

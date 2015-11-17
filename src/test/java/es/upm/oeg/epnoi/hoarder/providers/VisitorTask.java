@@ -57,7 +57,7 @@ public class VisitorTask implements Runnable {
 
 
         // request 'verb' to remote data provider
-        String responseXML = httpClient.doRequest(this.url,"ListRecords",null,null,"oai_dc",token);
+        String responseXML = httpClient.doRequest(this.url,"ListRecords",null,null,null,"oai_dc",token);
 
         // build a java object from xml
         OAIPMHtype responseObject = OAIPMHConverter.xmlToOaipmh(responseXML);

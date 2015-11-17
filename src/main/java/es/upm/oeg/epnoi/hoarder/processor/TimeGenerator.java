@@ -23,7 +23,11 @@ public class TimeGenerator implements Processor{
 
     DateTimeZone timezone = DateTimeZone.forID("Zulu");//UTC
 
-    DateTimeFormatter dateTimeFormatter = ISODateTimeFormat.dateTimeNoMillis().withZone(timezone);
+    //yyyy-MM-dd'T'HH:mm:ssZZ
+    DateTimeFormatter isoDateTimeNoMillis = ISODateTimeFormat.dateTimeNoMillis().withZone(timezone);
+
+    //yyyy-MM-dd
+    DateTimeFormatter isoDate = ISODateTimeFormat.date().withZone(timezone);
 
     DecimalFormat decimalFormat = new DecimalFormat("00");
 
@@ -32,7 +36,7 @@ public class TimeGenerator implements Processor{
 
         // Add current time
         long current = DateTime.now(timezone).getMillis();
-        addProperty(exchange, AbstractRouteBuilder.TIME,dateTimeFormatter.print(current));
+        addProperty(exchange, AbstractRouteBuilder.TIME, isoDateTimeNoMillis.print(current));
 
 
         // Read published date
@@ -40,11 +44,17 @@ public class TimeGenerator implements Processor{
 
         if ((time == null) || (time.trim().equals(""))){
             LOG.warn("no published date info for: {}! Collector timestamp used", AbstractRouteBuilder.PUBLICATION_URI);
-            time = dateTimeFormatter.print(current);
+            time = isoDateTimeNoMillis.print(current);
         }
 
         // Parse time (ISO-8601)
-        DateTime dateTime = dateTimeFormatter.parseDateTime(time);
+        DateTime dateTime = null;
+        if (time.contains("T")){
+            dateTime = isoDateTimeNoMillis.parseDateTime(time);
+        }else{
+            dateTime = isoDate.parseDateTime(time);
+        }
+
 
         // Add date in format: yyyy-mm-dd
         addProperty(exchange, AbstractRouteBuilder.PUBLICATION_PUBLISHED_DATE, Joiner.on("-").join(dateTime.getYear(),decimalFormat.format(dateTime.getMonthOfYear()),decimalFormat.format(dateTime.getDayOfMonth())));
